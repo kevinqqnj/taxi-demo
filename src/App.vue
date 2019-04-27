@@ -9,7 +9,7 @@
       <v-btn flat to="/">Home</v-btn>
       <v-btn flat to="/vue">Vue</v-btn>
       <v-btn flat to="/messages">Django Rest</v-btn>
-    
+
       <v-btn
         flat
         href="https://github.com/vuetifyjs/vuetify/releases/latest"

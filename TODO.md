@@ -1,17 +1,17 @@
-<template>
-  <div class="test">
 
-  </div>
-</template>
 
-<script>
-  export default {
-    name : 'test',
-    data() {
-      return {
-        websock: null,
-      }
-    },
+[] store.error ==> List?? avoid overwritten
+
+[] user log in => save cookie: sessionid in LocalStorage
+
+[x] ws auto use session to access authenticated view
+
+[x] axios interception
+  - all request will add correct headers
+  - all response error will store.commit 'setError'
+
+[] Websocket reconnect?
+```
     created() {
       this.initWebSocket();
     },
@@ -44,8 +44,4 @@
         console.log('断开连接',e);
       },
     },
-  }
-</script>
-<style lang='less'>
- 
-</style>
+```

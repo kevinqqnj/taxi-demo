@@ -1,11 +1,29 @@
 import Vue from 'vue'
-import './plugins/vuetify'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
 
-import App from '@/App.vue'
-import store from '@/store' 
-import router from '@/router'
+import router from './router'
+import store from '@/store'
+import './registerServiceWorker'
 
-Vue.config.productionTip = false
+import App from './App.vue'
+import AlertComponent from './components/Alert.vue'
+
+Vue.use(Vuetify)
+
+Vue.component('app-alert', AlertComponent)
+
+Vue.config.productionTip = !(process.env.NODE_ENV === 'production')
+
+// work with Vue-Router history==true
+if ('-ms-scroll-limit' in document.documentElement.style && '-ms-ime-align' in document.documentElement.style) {
+  window.addEventListener('hashchange', (event) => {
+    const currentPath = window.location.hash.slice(1)
+    if (router.path !== currentPath) {
+      router.push(currentPath)
+    }
+  }, false)
+}
 
 new Vue({
   router,

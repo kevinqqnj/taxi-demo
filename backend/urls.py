@@ -14,11 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, re_path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .trips.views import SignUpView, LogInView, LogOutView, index_view
+from .trips.views import SignUpView, LogInView, LogOutView, index_view, serve_worker_view
 
 urlpatterns = [
     path('', index_view, name='index'),
@@ -27,4 +27,14 @@ urlpatterns = [
     path('api/log_in/', LogInView.as_view(), name='log_in'),
     path('api/log_out/', LogOutView.as_view(), name='log_out'),
     path('api/trip/', include('backend.trips.urls', 'trip',)),
+
+    # serve static files for PWA
+    path('index.html', index_view, name='index_pwa'),
+    re_path(r'^(?P<worker_name>manifest).json$', serve_worker_view, name='manifest'),
+    re_path(r'^(?P<worker_name>[-\w\d.]+).js$', serve_worker_view, name='serve_worker'),
+    re_path(r'^(?P<worker_name>robots).txt$', serve_worker_view, name='robots'),
+
+    # support vue-router history mode
+    re_path(r'^\S+$', index_view, name='my404'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
