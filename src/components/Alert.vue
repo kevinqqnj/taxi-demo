@@ -1,5 +1,5 @@
 <template>
-  <v-alert error dismissible @input="onClose" :value="true" :outline="true">
+  <v-alert type="success" dismissible @input="onClose" :value="true" :outline="true">
     {{ text }}
   </v-alert>
 <!--   <v-snackbar color="error" :value="true" top :timeout="0">

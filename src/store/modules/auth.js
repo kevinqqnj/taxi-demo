@@ -1,9 +1,10 @@
-import authService from '../../services/authService'
+import authService from '@/services/authService'
+import router from '@/router'
 
 const state = {
   login: false,
   isLock: false,
-  user: {},
+  user: null,
   sessionid: null,
   globals: {
     pending_download_data: [],
@@ -33,15 +34,13 @@ const getters = {
   },
   sessionid: state => {
     let s = localStorage.getItem('sessionid')
-    if (s) return s
-    else return state.sessionid
+    return s || state.sessionid
   }
 }
 
 const mutations = {
   setUserInfo (state, payload) {
-    state.login = payload.login
-    state.user = payload.user
+    state.user = payload
   },
   setIsLock (state, isLock) {
     state.isLock = isLock
@@ -67,8 +66,12 @@ const mutations = {
   },
   login (state, response) {
     state.user = response
-    state.sessionid = response.sessionid
-    localStorage.setItem('sessionid', state.sessionid)
+    // state.sessionid = response.sessionid
+    // Vuex should NOT include localStorage actions
+    // localStorage.setItem('user', JSON.stringify(state.user))
+  },
+  logout (state) {
+    state.user = null
   }
 }
 
@@ -99,18 +102,30 @@ const actions = {
     commit('wsOnMessage', rdata)
   },
   async login ({ commit }, payload) {
-    // try {
-    commit('login', await authService.login(payload))
-    // } catch (error) {
-    //   console.log(error.response)
-    // if (error.response.status === 400) {
-    //   // Bad Request
-    //   commit('setError', error.response.data, { root: true })
-    // } else if (error.response.status === 403) {
-    //   // Forbidden
-    //   commit('setError', error.response.data.detail, { root: true })
-    // }
-    // }
+    let response = await authService.login(payload.user)
+    commit('login', response)
+    // if error, will not execute belows:
+    console.log('>>> login success!')
+    localStorage.setItem('user', JSON.stringify(state.user))
+    commit('setError', 'login success!', { root: true })
+    router.push(payload.redirect || '/')
+  },
+  async logout ({ commit }) {
+    await authService.logout()
+    commit('logout')
+    // if error, will not execute belows:
+    console.log('>>> you\'ve been logout!')
+    localStorage.removeItem('user')
+    commit('setError', 'logout success!', { root: true })
+  },
+  setUserInfo ({ commit }) {
+    let u = localStorage.getItem('user')
+    if (u) {
+      u = JSON.parse(u)
+    } else {
+      console.log('>>> no user info found in localStorage')
+    }
+    commit('setUserInfo', u)
   }
 }
 

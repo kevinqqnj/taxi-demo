@@ -40,8 +40,8 @@
 <script>
 export default {
   name: 'VueDemo',
-  props: {
-
+  created () {
+    this.$store.dispatch('auth/setUserInfo')
   }
 }
 </script>

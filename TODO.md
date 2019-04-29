@@ -1,5 +1,27 @@
 
 
+[] after setUserInfo, if user session expired, how to detect and redirect?
+ - response: 403 Forbidden, {"detail":"身份认证信息未提供。"}
+ - interception => clear localStorage.user
+ - How to test: Application -> Cookie -> delete "sessionid"
+
+[x] '/vue' meta.auth => redirect to 'login' => submit login => next: works!
+ - fixed by read localStorage
+
+[] current path: '/vue' => reload => django return '/' => main.js push '/vue'
+  BUT router redirect to '/login'??
+
+[] Vuex Global Notification component:
+ - error
+ - Info (no need dismiss)
+ - how to stack? for-each a list
+
+[] logout: clear localStorage + clear Cookie (sessionid is in Cookie!)
+
+
+[] onCreate => when localStorage.getItem('user') => show logOut/profile
+    else: show logIn/singUp
+
 [] store.error ==> List?? avoid overwritten
 
 [] user log in => save cookie: sessionid in LocalStorage

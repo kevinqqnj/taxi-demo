@@ -15,5 +15,9 @@ export default {
   login (payload) {
     return http.post(`log_in/`, payload)
       .then(response => response.data)
+  },
+  logout () {
+    return http.post(`log_out/`)
+      .then(response => response.data)
   }
 }

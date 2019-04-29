@@ -3,10 +3,14 @@ import Router from 'vue-router'
 import VueDemo from '@/views/VueDemo'
 import Home from '@/views/Home'
 import My404 from './views/My404.vue'
+import Signup from '@/views/Signup'
+import Signin from '@/views/Signin'
+
+import store from '@/store'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -16,15 +20,45 @@ export default new Router({
       component: Home
     },
     {
+      path: '/login',
+      name: 'Signin',
+      component: Signin
+    },
+    {
+      path: '/register',
+      name: 'Signup',
+      component: Signup
+    },
+    {
       path: '/messages',
       name: 'messages',
-      component: () => import(/* webpackChunkName: "messages" */ './views/Messages.vue')
+      component: () => import(/* webpackChunkName: "messages" */ './views/Messages.vue'),
+      meta: { auth: true }
     },
     {
       path: '/vue',
       name: 'vue',
-      component: VueDemo
+      component: VueDemo,
+      meta: { auth: true }
     },
     { path: '*', name: 'my404', component: My404 }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.auth)) {
+    // store.state not updated if load meta.auth page, so add check of localStorage
+    if ((store.state.auth.user === null || store.state.auth.user === undefined) &&
+      localStorage.getItem('user') === null) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  }
+  next()
+})
+
+export default router

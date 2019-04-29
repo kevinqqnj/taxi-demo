@@ -1,8 +1,10 @@
 <template>
+  <v-content>
     <v-container>
       <v-layout row v-if="error">
         <v-flex xs12 sm8 offset-sm2>
           <app-alert @dismissed="onDismissed" :text="error"></app-alert>
+          <!-- <app-alert success @dismissed="onDismissed" :text="error"></app-alert> -->
         </v-flex>
       </v-layout>
     <v-layout
@@ -31,6 +33,10 @@
       type="submit"
       value="login"
       @click="login({ username: 'user1', password: 'aaa' })"> |
+      <input
+      type="submit"
+      value="logout"
+      @click="logout()"> |
       <input
       type="submit"
       value="trips"
@@ -65,6 +71,7 @@
   </div>
 </v-layout>
 </v-container>
+</v-content>
 </template>
 
 <script>
@@ -80,7 +87,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['user', 'error', 'loading']),
+    ...mapState(['error', 'loading']),
     ...mapState('messages', ['messages']),
     ...mapState('auth', ['user', 'sessionid', 'globals', 'websocket'])
   },
@@ -107,7 +114,8 @@ export default {
       'wsOnOpen',
       'wsOnError',
       'wsOnMessage',
-      'login'
+      'login',
+      'logout'
     ]),
     onDismissed () {
       this.$store.dispatch('clearError')

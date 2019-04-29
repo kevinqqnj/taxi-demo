@@ -37,7 +37,7 @@ axios.interceptors.request.use(
 // 在 response 拦截器实现
 axios.interceptors.response.use(
   response => {
-    console.log(response)
+    // console.log(response)
     // 定时刷新access-token
     if (!response.data.value && response.data.data === 'token invalid') {
       // 刷新token
@@ -55,8 +55,15 @@ axios.interceptors.response.use(
       // Bad Request. within module: { root: true } ??
       store.commit('setError', error.response.data)
     } else if (error.response.status === 403) {
-      // Forbidden
+      // Forbidden 403
       store.commit('setError', error.response.data.detail, { root: true })
+      localStorage.removeItem('user')
+      store.commit('auth/setUserInfo')
+    } else if ([405].includes(error.response.status)) {
+      // Method Not Allowed 405
+      store.commit('setError', error.response.data.detail, { root: true })
+    } else {
+      console.log(`>>> un-handled error code! ${error.response.status}`)
     }
     return Promise.reject(error)
   }
