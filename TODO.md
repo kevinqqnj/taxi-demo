@@ -1,5 +1,7 @@
 
 
+[] Vuetify shake-tree?
+
 [] after setUserInfo, if user session expired, how to detect and redirect?
  - response: 403 Forbidden, {"detail":"身份认证信息未提供。"}
  - interception => clear localStorage.user

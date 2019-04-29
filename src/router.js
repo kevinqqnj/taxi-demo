@@ -3,8 +3,8 @@ import Router from 'vue-router'
 import VueDemo from '@/views/VueDemo'
 import Home from '@/views/Home'
 import My404 from './views/My404.vue'
-import Signup from '@/views/Signup'
-import Signin from '@/views/Signin'
+// import Signup from '@/views/Signup'
+// import Signin from '@/views/Signin'
 
 import store from '@/store'
 
@@ -21,13 +21,15 @@ const router = new Router({
     },
     {
       path: '/login',
-      name: 'Signin',
-      component: Signin
+      name: 'signin',
+      // component: Signin
+      component: () => import(/* webpackChunkName: "signin" */ './views/Signin.vue'),
     },
     {
       path: '/register',
-      name: 'Signup',
-      component: Signup
+      name: 'signup',
+      // component: Signup
+      component: () => import(/* webpackChunkName: "signup" */ './views/Signup.vue'),
     },
     {
       path: '/messages',

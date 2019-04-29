@@ -35,7 +35,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    loading (state) {
+    loading: state => {
       return state.loading
     },
     error (state) {
