@@ -1,4 +1,4 @@
-
+TESTING only
 ##Django + Rest Framework + Channels
 
 https://testdriven.io/courses/real-time-app-with-django-channels-and-angular/part-one-getting-started/
