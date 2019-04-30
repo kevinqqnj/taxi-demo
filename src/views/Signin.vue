@@ -78,9 +78,9 @@ export default {
   methods: {
     onSignin () {
       this.$store.dispatch('auth/login', {
-        user: {username: this.email, password: this.password},
+        user: { username: this.email, password: this.password },
         redirect: this.$route.query.redirect || '/'
-        })
+      })
     },
     onDismissed () {
       this.$store.dispatch('clearError')

@@ -1,5 +1,6 @@
 import authService from '@/services/authService'
 import router from '@/router'
+import Ws from '@/services/ws.js'
 
 const state = {
   login: false,
@@ -77,10 +78,8 @@ const mutations = {
 
 const actions = {
   async initWS ({ dispatch, commit }) {
-    const ws = await authService.initWS()
-    ws.onopen = () => dispatch('wsOnOpen')
-    ws.onerror = (e) => dispatch('wsOnError', e)
-    ws.onclose = (e) => dispatch('wsOnClose', e)
+    let ws = new Ws('guest')
+    ws = ws.init()
     ws.onmessage = (e) => dispatch('wsOnMessage', e)
     commit('initWS', ws)
   },
